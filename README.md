@@ -60,7 +60,9 @@ Additionally, anyBrute.py itself can be utilized as a library for other scripts 
 
 `ascii_upper_lower_and_nums`: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`
 
-`ascii_all_printable`:        ```ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890<>?,./:;'{}|[]\"\\~`!@#$%^&*()-_=+ ```
+`ascii_all_printable`: \\/ \\/ \\/       
+
+```ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890<>?,./:;'{}|[]\"\\~`!@#$%^&*()-_=+ ```
 
 ---
 __Additionally, any custom character set can be defined by assigning a charset value which does not aline with the above named conventions__, for instance...
