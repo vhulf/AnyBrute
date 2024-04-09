@@ -68,3 +68,6 @@ Additionally, anyBrute.py itself can be utilized as a library for other scripts 
 __Additionally, any custom character set can be defined by assigning a charset value which does not aline with the above named conventions__, for instance...
 
 `ABC123!@#`:                  `ABC123!@#`
+
+## Encoding Options
+--**--encode base64** -> Base64 encoding with '=' for padding.
