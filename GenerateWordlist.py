@@ -20,10 +20,17 @@
 # copies fifty 16-length randomized hex strings to your clipboard for pasting directly into Intruder
 
 
+# helper function for encoding...
+def base64it(string):
+    str_bytes = string.encode("ascii") 
+    base64_bytes = base64.b64encode(str_bytes) 
+    return base64_bytes.decode("ascii") 
+
 # Ensure this is only utilized as a script!
 if __name__ == "__main__":
     import argparse
     import textwrap
+    import base64
     import anybrute
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -40,14 +47,27 @@ if __name__ == "__main__":
     parser.add_argument("--charset", "-ch", default="hex_upper", help="Sets the charset, via named set or a string of characters to be included. Preloaded sets include: nums, hex_upper, hex_lower, ascii_upper_and_nums, ascii_lower_and_nums, ascii_upper_lower_and_nums, ascii_all_printable (Defaults: hex_upper) EX: ABCabc123!@#")
     parser.add_argument("--copyable", "-pb", default=False, action="store_true", help="Raise this flag to output directly to console (ignores wordlist location), useful for piping into PBCopy and right into Burps wordlist in Intruder.")
     parser.add_argument("--output", "-o", default="NOFILE", help="Location for wordlist to append to. [Will create if doesn't exist, otherwise appends to end.] (Defaults: NOFILE...)")
+    parser.add_argument("--encode", "-e", default="NOENCODE", help="Specify an encoding for final output. [Supported: base64 ...]")
     
     args = parser.parse_args()
     finalOut = "\r\n"
     for _ in range(1, int(args.count)):
         if args.form != "None":
-            finalOut += anybrute.generateFromForm(args.form, control_char=args.control_char, charset=args.charset) + '\r\n'
+            if args.encode == "NOENCODE":
+                finalOut += anybrute.generateFromForm(args.form, control_char=args.control_char, charset=args.charset) + '\r\n'
+            elif args.encode == "base64":
+                finalOut += base64it(anybrute.generateFromForm(args.form, control_char=args.control_char, charset=args.charset)) + '\r\n'
+            else:
+                print("INVALID ENCODING, STOPPING...")
+                exit()
         else:
-            finalOut += anybrute.generate(args.length, charset=args.charset) + '\r\n'
+            if args.encode == "NOENCODE":
+                finalOut += anybrute.generate(args.length, charset=args.charset) + '\r\n'
+            elif args.encode == "base64":
+                finalOut += base64it(anybrute.generate(args.length, charset=args.charset)) + '\r\n'
+            else:
+                print("INVALID ENCODING, STOPPING...")
+                exit()
 
     if args.copyable:
         finalOut = finalOut.replace("\r\n", "", 1)
